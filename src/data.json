@@ -1,0 +1,51 @@
+{
+  "sistema_usuarios_db": {
+    "estatus": [
+      { "id": 1, "nombre": "activo", "descripcion": "Usuario con acceso completo al sistema" },
+      { "id": 2, "nombre": "inactivo", "descripcion": "Usuario temporalmente inactivo" },
+      { "id": 3, "nombre": "bloqueado", "descripcion": "Bloqueado por seguridad o múltiples intentos fallidos" }
+    ],
+    "roles": [
+      { "id": 1, "nombre": "admin", "descripcion": "Administrador del sistema con privilegios globales" },
+      { "id": 2, "nombre": "usuario", "descripcion": "Usuario estándar del sistema" }
+    ],
+    "usuarios": [
+      {
+        "id": 1,
+        "nombre": "Ana Gómez",
+        "email": "ana.admin@empresa.com",
+        "password_hash": "$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
+        "estatus_id": 1,
+        "rol_id": 1,
+        "creado_en": "2026-01-15T08:30:00Z"
+      },
+      {
+        "id": 2,
+        "nombre": "Carlos Pérez",
+        "email": "carlos.perez@empresa.com",
+        "password_hash": "$2b$10$AHSR4R5/HoAxI4CZaWzbwuCNr5dd02d/ojpEYpRv25lPu8b0CV6eC",
+        "estatus_id": 1,
+        "rol_id": 2,
+        "creado_en": "2026-02-10T12:15:00Z"
+      },
+      {
+        "id": 3,
+        "nombre": "María Rodríguez",
+        "email": "maria.rodriguez@empresa.com",
+        "password_hash": "$2b$10$7ppR7o1T.fmYy0qGTMgZQOOJe0EUMDR007OTdlsnh6uKMs1GQWJ82",
+        "estatus_id": 1,
+        "rol_id": 1,
+        "creado_en": "2026-03-01T09:00:00Z"
+      },
+      {
+        "id": 4,
+        "nombre": "Roberto Sánchez",
+        "email": "roberto.sanchez@empresa.com",
+        "password_hash": "$2b$10$6yBvN4KcNvsYKJanVUPhuerQxGL34XcCv3U2dhDerCaWh/KD6uLoC",
+        "estatus_id": 3,
+        "rol_id": 2,
+        "creado_en": "2026-04-12T16:45:00Z"
+      }
+    ]
+  }
+}

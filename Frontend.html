@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión</title>
+    <style>
+        /*  styles.css  */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 16px;
+        }
+
+        .contenedor {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            overflow: hidden;
+        }
+
+        .pestanas {
+            display: flex;
+        }
+
+        .pestana {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            background: #f0f0f5;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: #888;
+            transition: all 0.3s ease;
+        }
+
+        .pestana.activa {
+            background: white;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .pestana.activa.trabajador {
+            color: #e67e22;
+            border-bottom-color: #e67e22;
+        }
+
+        .pestana.activa.registro {
+            color: #27ae60;
+            border-bottom-color: #27ae60;
+        }
+
+        .formulario {
+            padding: 32px;
+        }
+
+        .formulario h2 {
+            text-align: center;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .subtitulo {
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .campo {
+            margin-bottom: 18px;
+        }
+
+        .campo label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .campo input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e0e0e8;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .campo input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .campo input.error {
+            border-color: #e74c3c;
+        }
+
+        .mensaje-error {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .mensaje-error.visible {
+            display: block;
+        }
+
+        #campoEmpleado {
+            display: none;
+        }
+
+        #campoEmpleado.visible {
+            display: block;
+        }
+
+        #campoNombre,
+        #campoConfirmar {
+            display: none;
+        }
+
+        #campoNombre.visible,
+        #campoConfirmar.visible {
+            display: block;
+        }
+
+        .boton {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #667eea;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+        }
+
+        .boton:hover {
+            background: #5568d3;
+        }
+
+        .boton:active {
+            transform: scale(0.98);
+        }
+
+        .boton:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .boton.trabajador {
+            background: #e67e22;
+        }
+
+        .boton.trabajador:hover {
+            background: #cf6d15;
+        }
+
+        .boton.registro {
+            background: #27ae60;
+        }
+
+        .boton.registro:hover {
+            background: #1e8e4f;
+        }
+
+        .resultado {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            display: none;
+        }
+
+        .resultado.exito {
+            display: block;
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .resultado.fallo {
+            display: block;
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="contenedor">
+
+        <div class="pestanas">
+            <button id="tabUsuario" class="pestana activa">Usuarios</button>
+            <button id="tabTrabajador" class="pestana">Trabajadores</button>
+            <button id="tabRegistro" class="pestana">Crear cuenta</button>
+        </div>
+
+        <form id="formularioLogin" class="formulario" novalidate>
+            <h2 id="titulo">Iniciar Sesión</h2>
+            <p id="subtitulo" class="subtitulo">Accede a tu cuenta de usuario</p>
+
+            <div class="campo" id="campoNombre">
+                <label for="nombre">Nombre completo</label>
+                <input type="text" id="nombre" placeholder="Ej. Ana López">
+                <span class="mensaje-error" id="errorNombre">Escribe tu nombre (mínimo 2 caracteres)</span>
+            </div>
+
+            <div class="campo">
+                <label for="correo">Correo electrónico</label>
+                <input type="email" id="correo" placeholder="ejemplo@correo.com">
+                <span class="mensaje-error" id="errorCorreo">Ingresa un correo válido</span>
+            </div>
+
+            <div class="campo">
+                <label for="contrasena">Contraseña</label>
+                <input type="password" id="contrasena" placeholder="Mínimo 6 caracteres">
+                <span class="mensaje-error" id="errorContrasena">La contraseña debe tener al menos 6 caracteres</span>
+            </div>
+
+            <div class="campo" id="campoConfirmar">
+                <label for="confirmar">Confirmar contraseña</label>
+                <input type="password" id="confirmar" placeholder="Repite tu contraseña">
+                <span class="mensaje-error" id="errorConfirmar">Las contraseñas no coinciden</span>
+            </div>
+
+            <div class="campo" id="campoEmpleado">
+                <label for="numEmpleado">Número de empleado</label>
+                <input type="text" id="numEmpleado" placeholder="Ej. 2004">
+                <span class="mensaje-error" id="errorEmpleado">Coloque su numero de 4 digitos</span>
+            </div>
+
+            <button type="submit" id="botonEntrar" class="boton">Entrar como Usuario</button>
+
+            <div id="resultado" class="resultado"></div>
+        </form>
+    </div>
+
+    <script>
+        // =====================================================
+        // Página a la que se redirige tras un login exitoso.
+        // Cámbiala cuando tengas la página real.
+        // =====================================================
+        const SIGUIENTE_PAGINA = "admin.html";
+        const SIGUIENTE_PAGINA2 = "user.html";
+
+        // URL base de tu API
+        const API_URL = "http://localhost:5500";
+
+        // variables
+        const tabUsuario     = document.getElementById('tabUsuario');
+        const tabTrabajador  = document.getElementById('tabTrabajador');
+        const tabRegistro    = document.getElementById('tabRegistro');
+        const formulario     = document.getElementById('formularioLogin');
+        const titulo         = document.getElementById('titulo');
+        const subtitulo      = document.getElementById('subtitulo');
+        const campoNombre    = document.getElementById('campoNombre');
+        const campoConfirmar = document.getElementById('campoConfirmar');
+        const campoEmpleado  = document.getElementById('campoEmpleado');
+        const botonEntrar    = document.getElementById('botonEntrar');
+        const resultado      = document.getElementById('resultado');
+
+        const inputNombre     = document.getElementById('nombre');
+        const inputCorreo     = document.getElementById('correo');
+        const inputContrasena = document.getElementById('contrasena');
+        const inputConfirmar  = document.getElementById('confirmar');
+        const inputEmpleado   = document.getElementById('numEmpleado');
+
+        let rolActual = 'usuario';
+
+        //cambio interfaz
+        function cambiarRol(rol) {
+            rolActual = rol;
+            limpiarResultado();
+            limpiarErrores();
+
+            tabUsuario.classList.remove('activa');
+            tabTrabajador.classList.remove('activa', 'trabajador');
+            tabRegistro.classList.remove('activa', 'registro');
+            campoNombre.classList.remove('visible');
+            campoConfirmar.classList.remove('visible');
+            campoEmpleado.classList.remove('visible');
+            botonEntrar.classList.remove('trabajador', 'registro');
+
+            if (rol === 'usuario') {
+                tabUsuario.classList.add('activa');
+                titulo.textContent = 'Iniciar Sesión';
+                subtitulo.textContent = 'Accede a tu cuenta de usuario';
+                botonEntrar.textContent = 'Entrar como Usuario';
+
+            } else if (rol === 'trabajador') {
+                tabTrabajador.classList.add('activa', 'trabajador');
+                campoEmpleado.classList.add('visible');
+                botonEntrar.classList.add('trabajador');
+                titulo.textContent = 'Portal de Trabajadores';
+                subtitulo.textContent = 'Acceso exclusivo para personal';
+                botonEntrar.textContent = 'Entrar como Trabajador';
+
+            } else { // rol === 'registro'
+                tabRegistro.classList.add('activa', 'registro');
+                campoNombre.classList.add('visible');
+                campoConfirmar.classList.add('visible');
+                botonEntrar.classList.add('registro');
+                titulo.textContent = 'Crear Cuenta';
+                subtitulo.textContent = 'Regístrate como nuevo usuario';
+                botonEntrar.textContent = 'Crear mi cuenta';
+            }
+        }
+
+        function validarNombre() {
+            if (rolActual !== 'registro') return true;
+            const esValido = inputNombre.value.trim().length >= 2;
+            mostrarError(inputNombre, 'errorNombre', !esValido);
+            return esValido;
+        }
+
+        function validarCorreo() {
+            const patron = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const esValido = patron.test(inputCorreo.value.trim());
+            mostrarError(inputCorreo, 'errorCorreo', !esValido);
+            return esValido;
+        }
+
+        function validarContrasena() {
+            const esValida = inputContrasena.value.length >= 6;
+            mostrarError(inputContrasena, 'errorContrasena', !esValida);
+            return esValida;
+        }
+
+        function validarConfirmacion() {
+            if (rolActual !== 'registro') return true;
+            const esValida = inputConfirmar.value !== '' &&
+                             inputConfirmar.value === inputContrasena.value;
+            mostrarError(inputConfirmar, 'errorConfirmar', !esValida);
+            return esValida;
+        }
+
+        function validarEmpleado() {
+            if (rolActual !== 'trabajador') return true;
+            const patron = /^\d{4}$/;
+            const esValido = patron.test(inputEmpleado.value.trim());
+            mostrarError(inputEmpleado, 'errorEmpleado', !esValido);
+            return esValido;
+        }
+
+        function mostrarError(input, idMensaje, hayError) {
+            const mensaje = document.getElementById(idMensaje);
+            if (hayError) {
+                input.classList.add('error');
+                mensaje.classList.add('visible');
+            } else {
+                input.classList.remove('error');
+                mensaje.classList.remove('visible');
+            }
+        }
+
+        function limpiarErrores() {
+            mostrarError(inputNombre, 'errorNombre', false);
+            mostrarError(inputCorreo, 'errorCorreo', false);
+            mostrarError(inputContrasena, 'errorContrasena', false);
+            mostrarError(inputConfirmar, 'errorConfirmar', false);
+            mostrarError(inputEmpleado, 'errorEmpleado', false);
+        }
+
+        function limpiarResultado() {
+            resultado.className = 'resultado';
+            resultado.textContent = '';
+        }
+
+        function mostrarResultado(tipo, texto) {
+            resultado.className = 'resultado ' + tipo;
+            resultado.textContent = texto;
+        }
+
+        // Login real contra el servidor (bcrypt en el backend)
+        async function iniciarSesionUsuario() {
+            const correo = inputCorreo.value.trim();
+            const contrasena = inputContrasena.value;
+
+            botonEntrar.disabled = true;
+            botonEntrar.textContent = 'Entrando...';
+
+            try {
+                const res = await fetch(`${API_URL}/login`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ correo, contrasena }),
+                });
+
+                const data = await res.json();
+
+                if (!res.ok || !data.ok) {
+                    mostrarResultado('fallo', '❌ ' + (data.message || 'No se pudo iniciar sesión.'));
+                    return;
+                }
+
+                mostrarResultado('exito', '✅ Bienvenido, ' + data.usuario.nombre + '. Redirigiendo...');
+
+                // Guardamos algo simple de sesión (opcional, mejora luego con JWT real)
+                sessionStorage.setItem('usuario', JSON.stringify(data.usuario));
+
+                setTimeout(() => {
+                    if (rolActual == 'admin'){
+                        window.location.href = SIGUIENTE_PAGINA;
+                    } else {
+                        window.location.href = SIGUIENTE_PAGINA2;
+                    }
+                    
+                }, 800);
+
+            } catch (err) {
+                console.error(err);
+                mostrarResultado('fallo', '❌ No se pudo conectar con el servidor.');
+            } finally {
+                botonEntrar.disabled = false;
+                botonEntrar.textContent = rolActual === 'usuario' ? 'Entrar como Usuario' : botonEntrar.textContent;
+            }
+        }
+
+        formulario.addEventListener('submit', function(evento) {
+            evento.preventDefault();
+
+            const correoOk      = validarCorreo();
+            const contrasenaOk  = validarContrasena();
+
+            if (rolActual !== 'usuario') {
+                mostrarResultado('fallo', '❌ Por ahora solo el login de Usuario está habilitado.');
+                return;
+            }
+
+            if (!(correoOk && contrasenaOk)) {
+                mostrarResultado('fallo', '❌ Revisa los campos marcados en rojo.');
+                return;
+            }
+
+            iniciarSesionUsuario();
+        });
+
+        tabUsuario.addEventListener('click', () => cambiarRol('usuario'));
+        tabTrabajador.addEventListener('click', () => cambiarRol('trabajador'));
+        tabRegistro.addEventListener('click', () => cambiarRol('registro'));
+    </script>
+</body>
+</html>
