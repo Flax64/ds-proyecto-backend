@@ -419,12 +419,11 @@
                 sessionStorage.setItem('usuario', JSON.stringify(data.usuario));
 
                 setTimeout(() => {
-                    if (rolActual == 'admin'){
+                    if (data.usuario.rol === 'admin') {
                         window.location.href = SIGUIENTE_PAGINA;
                     } else {
                         window.location.href = SIGUIENTE_PAGINA2;
                     }
-                    
                 }, 800);
 
             } catch (err) {
